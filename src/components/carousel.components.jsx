@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 
 export default function Carousel(props){
 
@@ -9,61 +8,65 @@ export default function Carousel(props){
 
     const previousSlide = (idx) => {
         if (idx !== currIdx - 1) return
-        const updatedSlides = [...slides]
 
         if(currIdx === 1){
+            const updatedSlides = [...slides]
+
+            // No animation time; Add copy of last slide on the front of the carousel; Shift i to the right
             setDur(0)
             updatedSlides.unshift(updatedSlides[updatedSlides.length - 1])
             setSlides(updatedSlides)
             setCurrIdx((i) => i + 1)
 
-            setDur(200)
-            const temp = currIdx - 1 >= 0 ? 1 : 0
-            setTimeout(() => {setCurrIdx((i) => i - temp)}, 20)
+            // Set timeout 20ms after this script is loaded; Shift i to the left'
+            setTimeout(() => {
+                setDur(200)
+                setCurrIdx((i) => i - 1)
+            }, 20)
 
+            // Set timeout 50ms after this script is loaded; Pop the last slide
             setTimeout(() => {
                 setDur(0)
-                const updatedSlides = [...slides]
-                updatedSlides.unshift(updatedSlides[updatedSlides.length - 1])
                 updatedSlides.pop()
                 setSlides(updatedSlides)
-                setCurrIdx(1)
-            }, 200)
+            }, 50)
         }
         else{
             setDur(200)
-            const temp = currIdx - 1 >= 0 ? 1 : 0
-            setCurrIdx((i) => i - temp)
+            setCurrIdx((i) => i - 1)
         }
     }
     
     const nextSlide = (idx) => {
         if (idx !== currIdx + 1) return
-        const updatedSlides = [...slides]
 
         if (currIdx === slides.length - 2){
+            const updatedSlides = [...slides]
             updatedSlides.push(updatedSlides[0])
             setSlides(updatedSlides)
-        }
 
-        setDur(200)
-        const temp = currIdx + 1 < slides.length ? 1 : 0
-        setCurrIdx((i) => i + temp)
-        
-        if (currIdx === slides.length - 2){
+            setTimeout(() => {
+                setDur(200)
+                setCurrIdx((i) => i + 1)
+            },20)
+
             setTimeout(() => {
                 setDur(0)
                 updatedSlides.shift()
                 setSlides(updatedSlides)
-                setCurrIdx(1)
-            }, 200)
+                setCurrIdx((i) => i - 1)
+            }, 50)
+        }
+        else{
+            setDur(200)
+            setCurrIdx((i) => i + 1)
         }
     }
 
     return(
         <div className="w-[60%]">
             <div
-                className={`flex transition ease-out duration-${dur}`}
+                className={`flex transition ease-out duration-[${dur}ms]`}
                 style={{ transform: `translateX(-${currIdx * 100}%)` }}>
 
                 {slides.map((s, idx) => {return <img

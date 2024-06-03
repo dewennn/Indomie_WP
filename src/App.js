@@ -1,54 +1,37 @@
-import NavBar from "./components/nav_bar.components";
-import Carousel from "./components/carousel.components";
-import Product from "./components/product.components";
-import Event from "./components/event.components";
-
-const navList = ["Indomie", "Ice Cream", "Pop Mie","Support",
-["Mini Game", "https://www.indomie.com/indomieland/index.html"]]
-
-const productList = [
-    {name: "Indomie", msg: "Simply iconic.", img: "/indomie-goreng.png", bg: 0, theme: 1},
-
-    {name: "Choc Rocks x Indomie", msg: "Incredibly innovative. Unbelievably creamy", img: "/ice-cream-indomie.png", bg: 1, theme: 1},
-
-    {name: "Pop Mie", msg: "Small package. Large load.", img: "/pop-mie.png", bg: 0, theme: 0}
-]
-
-const eventList = [
-    "/indomie-charity.jpeg",
-    "/indomie-pubg.jpg",
-    "/indomie-event.jpg"
-]
+// App.js
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Import Routes component
+import NavBar from './components/nav_bar.components';
+import HomePage from './HomePage';
+import IndomiePage from './IndomiePage';
+import PopMiePage from './PopMiePage';
+import ChocRockPage from './ChocRockPage';
+import SupportPage from './SupportPage';
 
 function App() {
   return (
-    <>
-        <div style={{fontFamily: "Helvetica, Arial"}}>
-            <NavBar logo="/logo-indomie.png" navs={navList} />
-            <div className="min-h-[44px] bg-gray-700"></div>
-
-            {productList.map((product) => {return <Product
-                name={product["name"]}
-                msg={product["msg"]}
-                img={product["img"]}
-                bg={product["bg"]}
-                theme={product["theme"]}
-            />})}
-
-            <div className="grid grid-cols-2 gap-[10px] m-[10px] h-[500px]">
-                <Event title="Indomie Worldwide eating contest" detail="Join us in GBK 10-15 October" up={1} img="/eating-contest.png" theme={0}/>
-
-                <Event title="Anak Kos" detail="Indomie everyday. Save your wallet." up={0} img={"/anak-kos.png"} theme={0}/>
-            </div>
-
-
-            <div className="w-[100%] my-[5pzpx] overflow-hidden flex justify-center">
-                <Carousel slides={eventList}/>
-            </div>
-
-            
-        </div>
-    </>
+    <Router>
+      <div>
+        <NavBar
+          logo="/logo-indomie.png"
+          navs={[
+            ['Home', '/'],
+            ['Indomie', '/indomie'],
+            ['PopMie', '/popmie'],
+            ['ChocRock', '/chocrock'],
+            ['Support', '/support'],
+            ['Mini Game', 'https://www.indomie.com/indomieland/index.html']
+          ]}
+        />
+        <Routes> {/* Wrap Routes around Route components */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/indomie" element={<IndomiePage />} />
+          <Route path="/popmie" element={<PopMiePage />} />
+          <Route path="/chocrock" element={<ChocRockPage />} />
+          <Route path="/support" element={<SupportPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
